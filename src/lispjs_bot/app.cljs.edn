@@ -1,0 +1,3 @@
+{:require [lispjs-bot.core]
+ :compiler-options {:optimizations :none
+                    :target :nodejs}}

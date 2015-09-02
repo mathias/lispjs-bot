@@ -1,0 +1,27 @@
+{
+  "name": "lispjs-bot",
+  "version": "1.0.0",
+  "description": "**Goals**",
+  "main": "app.js",
+  "directories": {
+    "doc": "docs",
+    "test": "test"
+  },
+  "scripts": {
+    "start": "node app.js",
+    "test": "boot auto-test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mathias/lispjs-bot.git"
+  },
+  "author": "Matt Gauger <matt.gauger@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mathias/lispjs-bot/issues"
+  },
+  "homepage": "https://github.com/mathias/lispjs-bot",
+  "dependencies": {
+    "irc": "^0.3.12"
+  }
+}
