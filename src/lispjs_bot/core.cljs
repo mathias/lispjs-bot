@@ -39,8 +39,7 @@
                 (when (re-seq #"^[#]" room)
                   ;; Room notified, not PM
                   (cond
-                   (re-seq #"dance" message) (.say client room "\u0001ACTION dances: :D\\-<\u0001"))
-                  )))
+                   (re-seq #"dance" message) (.say client room "\u0001ACTION dances: :D\\-<\u0001")))))
 
 (add-listener "motd"
               (fn [msg]
