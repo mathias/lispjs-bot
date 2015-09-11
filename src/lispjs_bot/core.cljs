@@ -4,6 +4,7 @@
 (node/enable-util-print!)
 
 (def irc (node/require "irc"))
+(def fs (node/require "fs"))
 
 ;; ENV vars
 (def env
@@ -17,6 +18,30 @@
 (def channel-list (let [chan-str (.-CHANNEL_LIST env)]
                     (.split chan-str ",")))
 
+;; utility functions
+
+(defn logger [ctx msg]
+  (println ctx ": " msg))
+
+;; quotes files
+(def quotes (atom ""))
+(.readFile fs "quotes.txt"
+              "utf8"
+              (fn [err data]
+                (if err
+                  (logger "Error" err)
+                  (let [lines (.split data "\n")]
+                    (logger "readFile" lines)
+                    (reset! quotes lines)))))
+
+(defn get-random-quote
+  "Pick a random line from loaded quotes file"
+  []
+  (let [quotes @quotes
+        count-lines (count quotes)
+        random-quote (nth quotes (+ 1 (rand-int count-lines)))]
+    random-quote))
+
 ;; IRC client
 
 (def Client (.-Client irc))
@@ -27,9 +52,6 @@
 ;; IRC event handling
 (defn add-listener [event callback]
   (.addListener client event callback))
-
-(defn logger [ctx msg]
-  (println ctx ": " msg))
 
 (add-listener "error"
               (fn [msg]
@@ -44,7 +66,8 @@
                            (re-seq #"^!lispjs" message))
                   ;; Room notified, not PM
                   (cond
-                   (re-seq #"dance" message) (.say client room "\u0001ACTION dances: :D\\-<\u0001")))))
+                    (re-seq #"dance" message) (.say client room "\u0001ACTION dances: :D\\-<\u0001")
+                    (re-seq #"cyberpunk" message) (.say client room (get-random-quote))))))
 
 (add-listener "motd"
               (fn [msg]
